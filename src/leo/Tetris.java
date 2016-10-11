@@ -3,10 +3,13 @@ package leo;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics;
+import java.awt.MenuBar;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -14,6 +17,17 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.KeyStroke;
 
 public class Tetris extends Frame  implements MouseMotionListener, MouseListener,MouseWheelListener, ComponentListener{	
 	/**
@@ -23,6 +37,7 @@ public class Tetris extends Frame  implements MouseMotionListener, MouseListener
 	static MainArea ma = null;
 	ControlArea ca = null;	
 	DeviceCoordVsCenterLogic gLogic = new DeviceCoordVsCenterLogic(); 
+	ConfigureFrame configureFrame = new ConfigureFrame();
 	boolean bMouseInMainArea = false;
 	Tetris(){
 		super("Tetris");
@@ -37,7 +52,7 @@ public class Tetris extends Frame  implements MouseMotionListener, MouseListener
 		ma.setParent(this);
 		setLayout(null);		
 		setSize(410,410);		
-		setVisible(true);
+		setVisible(true);	
 		
 		addComponentListener(this); 
 		addMouseListener(this);
@@ -76,7 +91,24 @@ public class Tetris extends Frame  implements MouseMotionListener, MouseListener
 		if(inQuitButton){
 			System.out.println("quit");
 			System.exit(0);
-		}	
+		}
+		
+		Rectangle confRec = ca.configButton.getBounds();
+		boolean inConfigureButton = checkPointInRectangular(point, confRec);
+		if(inConfigureButton){
+			System.out.println("configure");
+			configureFrame.setVisible(true);		        
+			return;
+		}
+		
+
+		Rectangle startRec = ca.startButton.getBounds();
+		boolean inStartButton = checkPointInRectangular(point, startRec);
+		if(inStartButton){
+			System.out.println("Start");
+			//System.exit(0);
+			return;
+		}
 		
 		
 		Rectangle mainAreaRec = ma.getBounds();
