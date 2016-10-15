@@ -36,6 +36,7 @@ class MainArea extends Bounds implements TickListener, TouchBottomListener{
 		gameCore = new GameCore(board, colors);
 		TickThread.getSingleton().addListener(this);	
 		gameCore.addTouchBottomListener(this);
+		gameCore.addCleanLinesListener(ScoreController.getSingleton());
 	}
 	
 	public void paint(Graphics g){	

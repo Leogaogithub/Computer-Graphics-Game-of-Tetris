@@ -21,7 +21,7 @@ public class TickThread implements Runnable {
 	public void run() {
 		while(true){
 			try {
-				Thread.sleep(600);
+				Thread.sleep((int)(600/ScoreController.getSingleton().FS));
 				ticks++;
 				for(TickListener listener: listeners){
 					listener.updateAction();

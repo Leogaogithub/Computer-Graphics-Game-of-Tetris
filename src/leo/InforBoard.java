@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 
-public class InforBoard extends Bounds{
+public class InforBoard extends Bounds implements CleanLinesListener{
 	String score = "Score:    ";
 	String level = "Level:    ";
 	String lines = "Lines:    ";
@@ -15,6 +15,7 @@ public class InforBoard extends Bounds{
 	InforBoard(){
 		this.localCoordSys.rHeight = 6;
 		this.localCoordSys.rWidth  = 1;
+		ScoreController.getSingleton().addCleanLinesListener(this);
 	}	
 	
 	public void paint(Graphics g){
@@ -28,4 +29,12 @@ public class InforBoard extends Bounds{
 		g.drawString(lines+iLines, x, localCoordSys.iY(3f));
 		g.drawString(score+iScore, x, localCoordSys.iY(5f));
 	}
+
+	@Override
+	public void lineClean(int lines) {
+		System.out.println("InforBoard lineClean");
+		iLevel = ScoreController.getSingleton().iLevel;
+		iScore = ScoreController.getSingleton().iScore;
+		iLines = ScoreController.getSingleton().iLines;		
+	}	
 }

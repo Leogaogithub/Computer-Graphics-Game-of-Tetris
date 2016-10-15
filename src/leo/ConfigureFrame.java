@@ -35,12 +35,12 @@ public class ConfigureFrame extends JFrame {
         
         JLabel jnlabel = new JLabel("N number of rows required for	each Level of difficulty");
         jp.add(jnlabel);
-        nSlider = createSlider(20,50,20);
+        nSlider = createSlider(1,50,1);
         jp.add(nSlider);
         
         JLabel jslabel = new JLabel("S speed factor");
         jp.add(jslabel);
-        sSlider = createSlider(1,10,1);
+        sSlider = createSlider(1,10,10);
         jp.add(sSlider);
         
         this.add(jp, BorderLayout.CENTER);        
@@ -60,13 +60,24 @@ public class ConfigureFrame extends JFrame {
         this.setBounds(0, 0, 400, 400);               
 	}
 	
-	static private JSlider createSlider(int min, int max, int init){
-		
+	static private JSlider createSlider(int min, int max, int init){		
 		JSlider slider = new JSlider(JSlider.HORIZONTAL,min, max, init);        		
         slider.setMajorTickSpacing(5);
         slider.setMinorTickSpacing(1);
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);             
 		return slider;
+	}
+	
+	int getM(){
+		return mSlider.getValue();
+	}
+	
+	int getN(){
+		return nSlider.getValue();
+	}
+	
+	double getS(){
+		return sSlider.getValue()/10.0;
 	}
 }

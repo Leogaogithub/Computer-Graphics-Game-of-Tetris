@@ -37,7 +37,7 @@ public class Tetris extends Frame  implements MouseMotionListener, MouseListener
 	static MainArea ma = null;
 	ControlArea ca = null;	
 	DeviceCoordVsCenterLogic gLogic = new DeviceCoordVsCenterLogic(); 
-	ConfigureFrame configureFrame = new ConfigureFrame();
+	static ConfigureFrame configureFrame = new ConfigureFrame();
 	boolean bMouseInMainArea = false;
 	Tetris(){
 		super("Tetris");
@@ -97,10 +97,12 @@ public class Tetris extends Frame  implements MouseMotionListener, MouseListener
 		boolean inConfigureButton = checkPointInRectangular(point, confRec);
 		if(inConfigureButton){
 			System.out.println("configure");
-			configureFrame.setVisible(true);		        
+			configureFrame.setVisible(true);
+			ScoreController.getSingleton().setM(configureFrame.getM());
+			ScoreController.getSingleton().setN(configureFrame.getN());
+			ScoreController.getSingleton().setS(configureFrame.getS());
 			return;
-		}
-		
+		}		
 
 		Rectangle startRec = ca.startButton.getBounds();
 		boolean inStartButton = checkPointInRectangular(point, startRec);
@@ -108,8 +110,7 @@ public class Tetris extends Frame  implements MouseMotionListener, MouseListener
 			System.out.println("Start");
 			//System.exit(0);
 			return;
-		}
-		
+		}		
 		
 		Rectangle mainAreaRec = ma.getBounds();
 		boolean inMainArea = checkPointInRectangular(point, mainAreaRec);
