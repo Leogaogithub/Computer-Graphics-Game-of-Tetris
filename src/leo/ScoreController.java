@@ -5,7 +5,6 @@ import java.util.LinkedList;
 public class ScoreController implements CleanLinesListener{
 	static ScoreController singleton = new ScoreController();
 	static ScoreController getSingleton(){
-		//if(singleton==null) return new ScoreController();
 		return singleton;
 	}
 
@@ -71,9 +70,15 @@ public class ScoreController implements CleanLinesListener{
 		}
 	}
 	
+	public void substractScores(){
+		iScore	=	iScore	- iLevel*M;
+		System.out.println("substractScores to :"  + iScore);
+		for(CleanLinesListener listener: cleanLinesListeners){
+			listener.lineClean(1);
+		}
+	}
 	
 	void addCleanLinesListener(CleanLinesListener listener){
 		cleanLinesListeners.add(listener);
-	}
-	
+	}	
 }

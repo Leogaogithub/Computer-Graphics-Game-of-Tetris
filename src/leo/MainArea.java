@@ -79,6 +79,34 @@ class MainArea extends Bounds implements TickListener, TouchBottomListener{
 		pauseButton.paint(g);		
 	}
 	
+	public boolean checkPointInCurShape(Point pointDevice){
+		Point curPosition = gameCore.curPosition;
+		Shape curShape = ResourceManager.getSingleton().getCurShape();
+		Rectangle rectangle = new Rectangle();
+		for(Point point: curShape.points){
+			int newX = point.x+curPosition.x;
+			int newY = point.y+curPosition.y;
+			int x = localCoordSys.iX(newX);
+			int y = localCoordSys.iY(newY);
+			int w = localCoordSys.iX(newX+1)-x;
+			int h = localCoordSys.iY(newY+1)-y;
+			rectangle.setBounds(x, y, w, h);
+			if(checkPointInRectangular(pointDevice, rectangle)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean checkPointInRectangular(Point point, Rectangle rectangle) {		
+		if(point.getX() < rectangle.getMaxX() 
+		&& point.getX() > rectangle.getMinX()
+		&& point.getY() < rectangle.getMaxY()
+		&& point.getY() > rectangle.getMinY()) 
+			return true;
+		return false;
+	}
+	
 	public void showPause(){
 		pauseButton.setVisible(true);				
 	}

@@ -28,6 +28,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
+import javax.swing.text.Position;
 
 public class Tetris extends Frame  implements MouseMotionListener, MouseListener,MouseWheelListener, ComponentListener{	
 	/**
@@ -39,6 +40,7 @@ public class Tetris extends Frame  implements MouseMotionListener, MouseListener
 	DeviceCoordVsCenterLogic gLogic = new DeviceCoordVsCenterLogic(); 
 	static ConfigureFrame configureFrame = new ConfigureFrame();
 	boolean bMouseInMainArea = false;
+	boolean bShapeHasChanged = false;
 	Tetris(){
 		super("Tetris");
 		addWindowListener(new WindowAdapter(){
@@ -82,7 +84,7 @@ public class Tetris extends Frame  implements MouseMotionListener, MouseListener
 			return true;
 		return false;
 	}
-
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		Point point = e.getPoint();
@@ -145,14 +147,25 @@ public class Tetris extends Frame  implements MouseMotionListener, MouseListener
 		if(!bMouseInMainArea && inMainArea){
 			System.out.println("in");
 			bMouseInMainArea = true;
-			ma.showPause();
+			ma.showPause();				
 			repaint();
 		}else if((!inMainArea)&&(bMouseInMainArea)){
 			System.out.println("out");
 			bMouseInMainArea = false;
 			ma.hidePause();
 			repaint();
-		}		
+		}
+		
+		if(inMainArea&& (!bShapeHasChanged) && ma.checkPointInCurShape(point)){
+			System.out.println("in cur shape");			
+			ma.showPause();	
+			bShapeHasChanged = true;
+			ResourceManager.getSingleton().changeCurShapeByRandom();
+			ScoreController.getSingleton().substractScores();
+			repaint();
+		}else{
+			bShapeHasChanged = false;
+		}
 	}
 
 	@Override
@@ -165,8 +178,7 @@ public class Tetris extends Frame  implements MouseMotionListener, MouseListener
 			if(notches>0) ma.gameCore.clockwiseRotate();
 			else ma.gameCore.counterClockwiseRotate();
 			repaint();
-		}
-		
+		}		
 	}
 	@Override
 	public void mouseEntered(MouseEvent e) {}

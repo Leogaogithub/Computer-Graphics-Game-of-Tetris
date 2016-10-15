@@ -94,9 +94,8 @@ public class GameCore {
 				if(CheckLineWithOutHole(y)){
 					cleanLineSet.add(y);
 				}				
-			}
-			curPosition.x = 4;
-			curPosition.y = 0;	
+			}			
+			
 			if(!cleanLineSet.isEmpty()){				
 				for(CleanLinesListener listener: cleanLinesListeners){
 					listener.lineClean(cleanLineSet.size());
@@ -104,11 +103,28 @@ public class GameCore {
 				cleanLines();
 			}
 			
+			if(cleanLineSet.isEmpty() && checkIsTerminate(shape, curPosition)){
+				return;
+			}
+			
+			curPosition.x = 4;
+			curPosition.y = 0;	
 			ResourceManager.getSingleton().generateNext();
 			for(TouchBottomListener listener: touchBottomListener){
 				listener.touchBottom();
 			}
 		}
+	}
+	
+	boolean checkIsTerminate(Shape shape, Point cur){
+		for(Point point: shape.points){
+			int x = point.x+cur.x;
+			int y = point.y+cur.y;
+			if(board[y][x] == 1 && y==0){
+				return true;
+			}							
+		}
+		return false;
 	}
 	
 	void cleanLines(){

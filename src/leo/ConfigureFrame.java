@@ -24,7 +24,7 @@ public class ConfigureFrame extends JFrame {
 		Font font = new Font("Serif", Font.ITALIC, 15);
         this.setTitle("Configuration");        
         this.pack();
-        this.setVisible(true);
+        this.setVisible(false);
         setLayout(new BorderLayout());
         JPanel jp = new JPanel(new GridLayout(6,1));
         jp.setFont(font);

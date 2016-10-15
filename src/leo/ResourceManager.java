@@ -47,6 +47,16 @@ public class ResourceManager{
 		return colors[colorId];
 	}
 	
+	int changeCurShapeByRandom(){
+		int randomShapeId = 0;
+		while(true){
+			randomShapeId = random.nextInt(28);
+			if((randomShapeId/4 != curShapeId/4) && (randomShapeId/4 != nextShapeId/4)) break;
+		}
+		curShapeId = randomShapeId;
+		curColorId = randomShapeId/4;
+		return curShapeId;
+	}
 	
 	Shape getNextShape(){		
 		return shapes[nextShapeId];
