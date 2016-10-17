@@ -20,7 +20,17 @@ class MainArea extends Bounds implements TickListener, TouchBottomListener{
 	}
 	MainArea(){		
 		pauseButton = new MyButton("PAUSE", Color.MAGENTA);			
-		pauseButton.setVisible(false);			
+		pauseButton.setVisible(false);	
+		gameCore = new GameCore();
+		initBoardSize(10, 20);		
+		TickThread.getSingleton().addListener(this);	
+		gameCore.addTouchBottomListener(this);
+		gameCore.addCleanLinesListener(ScoreController.getSingleton());
+	}
+	
+	void initBoardSize(int mboardWidth, int mboardHeight){
+		boardHeight = mboardHeight;
+		boardWidth = mboardWidth;
 		localCoordSys.rHeight = boardHeight;
 		localCoordSys.rWidth = boardWidth;
 		board = new int[boardHeight][];
@@ -33,19 +43,17 @@ class MainArea extends Bounds implements TickListener, TouchBottomListener{
 				colors[j][i] = 0;
 			}
 		}
-		gameCore = new GameCore(board, colors);
-		TickThread.getSingleton().addListener(this);	
-		gameCore.addTouchBottomListener(this);
-		gameCore.addCleanLinesListener(ScoreController.getSingleton());
+		gameCore.init(board, colors);
 	}
-	
 	public void paint(Graphics g){	
 		graphics = g;
 		g.setColor(Color.black);		
 		Rectangle rectangle = getBounds();	
-		g.drawRect(rectangle.x,rectangle.y,rectangle.width-1,rectangle.height-1);	
+		//g.drawRect(rectangle.x,rectangle.y,rectangle.width-1,rectangle.height-1);
 		localCoordSys.update(rectangle);
-		
+		int outlineWidth = localCoordSys.iLength(boardWidth);
+		int outlineHeight = localCoordSys.iLength(boardHeight);
+		g.drawRect(rectangle.x,rectangle.y,outlineWidth,outlineHeight);	
 		// paint cur shape
 		Point curPosition = gameCore.curPosition;
 		Shape curShape = ResourceManager.getSingleton().getCurShape();
@@ -73,8 +81,8 @@ class MainArea extends Bounds implements TickListener, TouchBottomListener{
 			}
 		}
 		
-		int size = localCoordSys.iLength(1);
-		rectangle = new Rectangle(localCoordSys.iX(2), localCoordSys.iY(9), size*6, size*2);		
+		int size = localCoordSys.iLength(boardWidth/10);
+		rectangle = new Rectangle(localCoordSys.iX(2*boardWidth/10), localCoordSys.iY(9*boardHeight/20), size*6, size*2);		
 		pauseButton.setBounds(rectangle);
 		pauseButton.paint(g);		
 	}

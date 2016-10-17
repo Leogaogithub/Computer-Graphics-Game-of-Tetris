@@ -9,25 +9,34 @@ public class ScoreController implements CleanLinesListener{
 	}
 
 	private ScoreController(){
-		
+		init();
 	}
 	
 	void init(){
-		iScore = 0;
-		iLevel = 1;
-		 iLines = 0;
+		initScore();
 		 M = 1;
 		 N = 20;
 		 S = 1.0;
-		 curLines = 0;
+		 
+	}
+	void initScore(){
+		iScore = 0;
+		iLevel = 1;
+		iLines = 0;
+		curLines = 0;
+		for(CleanLinesListener listener: cleanLinesListeners){
+			listener.lineClean(1);
+		}
 	}
 	int iScore = 0;
 	int iLevel = 1;
 	int iLines = 0;
 	int M = 1;
-
 	int N = 20;
 	double S = 1.0;
+	
+	int H = 20;
+	int W = 10;
 	int curLines = 0;
 	double FS = 1;
 	LinkedList<CleanLinesListener> cleanLinesListeners = new LinkedList<>();
@@ -53,6 +62,21 @@ public class ScoreController implements CleanLinesListener{
 
 	public void setS(double s) {
 		S = s;
+	}
+	public int getH() {
+		return H;
+	}
+
+	public void setH(int h) {
+		H = h;
+	}
+
+	public int getW() {
+		return W;
+	}
+
+	public void setW(int w) {
+		W = w;
 	}
 	@Override
 	public void lineClean(int lines) {

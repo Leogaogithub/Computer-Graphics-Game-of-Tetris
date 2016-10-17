@@ -24,17 +24,8 @@ public class GameCore {
 		cleanLinesListeners.add(listener);
 	}
 	
-	GameCore(int[][] board, int[][] colors){
-		curPosition = new Point(4,0);	
-		this.board = board;
-		this.colors = colors;
-		maxX = board[0].length - 1;
-		maxY = board.length - 1;
-		cleanLineSet = new HashSet<>();
-	}
-	
 	GameCore(){
-		
+		cleanLineSet = new HashSet<>();
 	}
 	
 	void init(int[][] board, int[][] colors){
@@ -42,8 +33,7 @@ public class GameCore {
 		this.board = board;
 		this.colors = colors;
 		maxX = board[0].length - 1;
-		maxY = board.length - 1;
-		cleanLineSet = new HashSet<>();
+		maxY = board.length - 1;		
 	}
 	void addTouchBottomListener(TouchBottomListener listener){
 		touchBottomListener.add(listener);

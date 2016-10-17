@@ -41,6 +41,7 @@ public class Tetris extends Frame  implements MouseMotionListener, MouseListener
 	static ConfigureFrame configureFrame = new ConfigureFrame();
 	boolean bMouseInMainArea = false;
 	boolean bShapeHasChanged = false;
+	Thread tickThread = null;
 	Tetris(){
 		super("Tetris");
 		addWindowListener(new WindowAdapter(){
@@ -61,6 +62,7 @@ public class Tetris extends Frame  implements MouseMotionListener, MouseListener
 		addMouseMotionListener(this);
 		addMouseWheelListener(this);
 		Thread tickThread = new Thread(TickThread.getSingleton());
+		ScoreController.getSingleton();
 		tickThread.run();
 	}	
 	
@@ -99,10 +101,7 @@ public class Tetris extends Frame  implements MouseMotionListener, MouseListener
 		boolean inConfigureButton = checkPointInRectangular(point, confRec);
 		if(inConfigureButton){
 			System.out.println("configure");
-			configureFrame.setVisible(true);
-			ScoreController.getSingleton().setM(configureFrame.getM());
-			ScoreController.getSingleton().setN(configureFrame.getN());
-			ScoreController.getSingleton().setS(configureFrame.getS());
+			configureFrame.setVisible(true);			
 			return;
 		}		
 
@@ -110,7 +109,11 @@ public class Tetris extends Frame  implements MouseMotionListener, MouseListener
 		boolean inStartButton = checkPointInRectangular(point, startRec);
 		if(inStartButton){
 			System.out.println("Start");
-			//System.exit(0);
+			int w = ScoreController.getSingleton().getW();
+			int h = ScoreController.getSingleton().getH();
+			ScoreController.getSingleton().initScore();
+			ma.initBoardSize(w, h);
+			TickThread.getSingleton().setSendAction(true);
 			return;
 		}		
 		
